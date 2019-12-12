@@ -62,14 +62,14 @@ else
     -D_ChecksumPlugin_fadler64
   ifeq ($(MD5),0)
   else
-    DEF_FLAGS += -D_ChecksumPlugin_md5 -I'../libmd5'
+    DEF_FLAGS += -D_ChecksumPlugin_md5 -I'libmd5'
   endif
 endif
 ifeq ($(LZMA),0)
 else
   DEF_FLAGS += \
-    -D_CompressPlugin_lzma -I'../lzma/C' \
-    -D_CompressPlugin_lzma2 -I'../lzma/C'
+    -D_CompressPlugin_lzma -I'lzma/C' \
+    -D_CompressPlugin_lzma2 -I'lzma/C'
 endif
 ifeq ($(MT),0)
   DEF_FLAGS += \
@@ -107,7 +107,7 @@ else
   else
     MD5_OBJ     := 'md5.o'
     md5Lib      : # https://sourceforge.net/projects/libmd5-rfc  https://github.com/sisong/libmd5
-	$(CC) -c $(CFLAGS) '../libmd5/md5.c'
+	$(CC) -c $(CFLAGS) 'libmd5/md5.c'
   endif
 endif
 
@@ -118,13 +118,13 @@ ifeq ($(LZMA),0)
 else
   LZMA_DEC_OBJ := 'LzmaDec.o' 'Lzma2Dec.o' 
   LZMA_OBJ     := 'LzFind.o' 'LzmaEnc.o' 'Lzma2Enc.o' $(LZMA_DEC_OBJ)
-  LZMA_SRC     := '../lzma/C/LzFind.c' '../lzma/C/LzmaDec.c' '../lzma/C/LzmaEnc.c' \
-		     '../lzma/C/Lzma2Dec.c' '../lzma/C/Lzma2Enc.c'
+  LZMA_SRC     := 'lzma/C/LzFind.c' 'lzma/C/LzmaDec.c' 'lzma/C/LzmaEnc.c' \
+		     'lzma/C/Lzma2Dec.c' 'lzma/C/Lzma2Enc.c'
   ifeq ($(MT),0)  
   else  # download from https://github.com/sisong/lzma/tree/pthread
     LZMA_OBJ += 'LzFindMt.o' 'MtCoder.o' 'MtDec.o' 'ThreadsP.o'
-    LZMA_SRC += '../lzma/C/LzFindMt.c' '../lzma/C/MtCoder.c' \
-		   '../lzma/C/MtDec.c' '../lzma/C/ThreadsP.c' 
+    LZMA_SRC += 'lzma/C/LzFindMt.c' 'lzma/C/MtCoder.c' \
+		   'lzma/C/MtDec.c' 'lzma/C/ThreadsP.c' 
   endif
   lzmaLib: # https://www.7-zip.org/sdk.html  https://github.com/sisong/lzma
 	$(CC) -c $(CFLAGS) $(LZMA_SRC)
