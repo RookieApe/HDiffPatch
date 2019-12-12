@@ -48,7 +48,7 @@
 
 #ifdef  _CompressPlugin_zlib
 #if (_IsNeedIncludeDefaultCompressHead)
-#   include "../zlib/zlib.h" // http://zlib.net/  https://github.com/madler/zlib
+#   include "zlib/zlib.h" // http://zlib.net/  https://github.com/madler/zlib
 #endif
     typedef struct _zlib_TDecompress{
         hpatch_StreamPos_t code_begin;
