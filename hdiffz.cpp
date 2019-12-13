@@ -42,7 +42,7 @@
 #include "file_for_patch.h"
 #include "libHDiffPatch/HDiff/private_diff/mem_buf.h"
 
-#include "jni/utils_BsDiffUtils.h"
+//#include "jni/utils_BsDiffUtils.h"
 
 #include "dirDiffPatch/dir_patch/dir_patch.h"
 #if (_IS_NEED_DIR_DIFF_PATCH)
@@ -1683,7 +1683,7 @@ void charTowchar(const char* chr, wchar_t* wchar, int size)
 {
     MultiByteToWideChar(CP_ACP, 0, chr, strlen(chr) + 1, wchar, size / sizeof(wchar[0]));
 }
-
+/*
 JNIEXPORT jint JNICALL Java_utils_BsDiff_bsDiff(JNIEnv* env, jclass clazz, jstring oldFile_jstr, jstring newFile_jstr, jstring patchFile_jstr) {
 
     int ret = -1;
@@ -1715,3 +1715,4 @@ JNIEXPORT jint JNICALL Java_utils_BsDiff_bsDiff(JNIEnv* env, jclass clazz, jstri
 
     return ret;
 }
+*/
