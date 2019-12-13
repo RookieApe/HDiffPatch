@@ -95,6 +95,10 @@ CXXFLAGS += $(DEF_FLAGS)
 
 .PHONY: all install clean
 
+#the jni.h path
+pathlix:=-I$(JAVA_HOME)/include/linux
+pathinclude:=-I$(JAVA_HOME)/include/
+
 all: md5Lib lzmaLib libhdiffpatch.a hdiffz hpatchz
 
 ifeq ($(DIR_DIFF),0)
@@ -134,7 +138,7 @@ libhdiffpatch.a: $(HDIFF_OBJ)
 	$(AR) rcs $@ $^
 
 hdiffz: 
-	$(CXX) hdiffz.cpp libhdiffpatch.a $(MD5_OBJ) $(LZMA_OBJ) $(CXXFLAGS) $(DIFF_LINK) -o hdiffz
+	$(CXX) hdiffz.cpp libhdiffpatch.a $(MD5_OBJ) $(LZMA_OBJ) $(CXXFLAGS) $(DIFF_LINK) $(pathlix) $(pathinclude) -o hdiffz
 hpatchz: 
 	$(CC) hpatchz.c $(HPATCH_OBJ) $(MD5_OBJ) $(LZMA_DEC_OBJ) $(CFLAGS) $(PATCH_LINK) -o hpatchz
 
