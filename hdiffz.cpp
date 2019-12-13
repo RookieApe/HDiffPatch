@@ -1679,11 +1679,12 @@ clear:
 }
 #endif //_IS_NEED_DIR_DIFF_PATCH
 
+/*
 void charTowchar(const char* chr, wchar_t* wchar, int size)
 {
     MultiByteToWideChar(CP_ACP, 0, chr, strlen(chr) + 1, wchar, size / sizeof(wchar[0]));
 }
-/*
+
 JNIEXPORT jint JNICALL Java_utils_BsDiff_bsDiff(JNIEnv* env, jclass clazz, jstring oldFile_jstr, jstring newFile_jstr, jstring patchFile_jstr) {
 
     int ret = -1;
