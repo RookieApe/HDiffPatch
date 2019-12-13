@@ -42,7 +42,7 @@
 #include "file_for_patch.h"
 #include "libHDiffPatch/HDiff/private_diff/mem_buf.h"
 
-//#include "jni/utils_BsDiffUtils.h"
+#include "jni/utils_BsDiffUtils.h"
 
 #include "dirDiffPatch/dir_patch/dir_patch.h"
 #if (_IS_NEED_DIR_DIFF_PATCH)
@@ -1679,11 +1679,13 @@ clear:
 }
 #endif //_IS_NEED_DIR_DIFF_PATCH
 
-/*
+# if (_IS_USED_WIN32_UTF8_WAPI)
 void charTowchar(const char* chr, wchar_t* wchar, int size)
 {
     MultiByteToWideChar(CP_ACP, 0, chr, strlen(chr) + 1, wchar, size / sizeof(wchar[0]));
 }
+# endif
+
 
 JNIEXPORT jint JNICALL Java_utils_BsDiff_bsDiff(JNIEnv* env, jclass clazz, jstring oldFile_jstr, jstring newFile_jstr, jstring patchFile_jstr) {
 
@@ -1696,7 +1698,9 @@ JNIEXPORT jint JNICALL Java_utils_BsDiff_bsDiff(JNIEnv* env, jclass clazz, jstri
     const int param_length = 4;
 
     char* arg[param_length];
-    wchar_t* wArg[param_length] ;
+
+# if (_IS_USED_WIN32_UTF8_WAPI)
+    wchar_t* wArg[param_length];
 
     arg[0] = "hdiffz";
     arg[1] = oldFile;
@@ -1709,6 +1713,9 @@ JNIEXPORT jint JNICALL Java_utils_BsDiff_bsDiff(JNIEnv* env, jclass clazz, jstri
     }
 
     ret = wmain(param_length, wArg);
+# else
+    ret = main(param_length, arg);
+# endif
 
     env->ReleaseStringChars(oldFile_jstr, (const jchar*) oldFile);
     env->ReleaseStringChars(newFile_jstr, (const jchar*) newFile);
@@ -1716,4 +1723,3 @@ JNIEXPORT jint JNICALL Java_utils_BsDiff_bsDiff(JNIEnv* env, jclass clazz, jstri
 
     return ret;
 }
-*/
