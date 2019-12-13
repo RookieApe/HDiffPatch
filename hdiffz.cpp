@@ -1698,14 +1698,14 @@ JNIEXPORT jint JNICALL Java_utils_BsDiff_bsDiff(JNIEnv* env, jclass clazz, jstri
     const int param_length = 4;
 
     char* arg[param_length];
-
-# if (_IS_USED_WIN32_UTF8_WAPI)
-    wchar_t* wArg[param_length];
-
-    arg[0] = "hdiffz";
+	
+	arg[0] = "hdiffz";
     arg[1] = oldFile;
     arg[2] = newFile;
     arg[3] = patchFile;
+
+# if (_IS_USED_WIN32_UTF8_WAPI)
+    wchar_t* wArg[param_length];
 
     for (size_t i = 0; i < param_length; i++)
     {
