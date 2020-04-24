@@ -5,6 +5,8 @@ MD5      := 0
 MT       := 0
 
 
+SHARE   := -fPIC -shared -o
+
 HPATCH_OBJ := \
     libHDiffPatch/HPatch/patch.o \
     file_for_patch.o \
@@ -45,7 +47,7 @@ endif
 
 
 DEF_FLAGS := \
-    -O3 -DNDEBUG -D_FILE_OFFSET_BITS=64 \
+    -O3 -fPIC -DNDEBUG -D_FILE_OFFSET_BITS=64 \
     -D_IS_NEED_ORIGINAL=1 \
     -D_IS_NEED_ALL_CompressPlugin=0 \
     -D_IS_NEED_DEFAULT_CompressPlugin=0 \
@@ -90,7 +92,7 @@ else
 endif
 
 
-CFLAGS   += $(DEF_FLAGS) 
+CFLAGS   += $(DEF_FLAGS)
 CXXFLAGS += $(DEF_FLAGS)
 
 .PHONY: all install clean
@@ -99,7 +101,7 @@ CXXFLAGS += $(DEF_FLAGS)
 pathlix:=-I$(JAVA_HOME)/include/linux
 pathinclude:=-I$(JAVA_HOME)/include/
 
-all: md5Lib lzmaLib libhdiffpatch.a hdiffz hpatchz
+all: md5Lib lzmaLib libhdiffpatch.a hdiffz
 
 ifeq ($(DIR_DIFF),0)
   MD5_OBJ     :=
@@ -111,7 +113,7 @@ else
   else
     MD5_OBJ     := 'md5.o'
     md5Lib      : # https://sourceforge.net/projects/libmd5-rfc  https://github.com/sisong/libmd5
-	$(CC) -c $(CFLAGS) 'libmd5/md5.c'
+	$(CC) -fPIC -shared -c $(CFLAGS) 'libmd5/md5.c'
   endif
 endif
 
@@ -131,14 +133,15 @@ else
 		   'lzma/C/MtDec.c' 'lzma/C/ThreadsP.c' 
   endif
   lzmaLib: # https://www.7-zip.org/sdk.html  https://github.com/sisong/lzma
-	$(CC) -c $(CFLAGS) $(LZMA_SRC)
+	$(CC) -fPIC -shared -c $(CFLAGS) $(LZMA_SRC)
 endif
 
 libhdiffpatch.a: $(HDIFF_OBJ)
 	$(AR) rcs $@ $^
+#	$(CC) -fPIC -shared -c $(HDIFF_OBJ)
 
 hdiffz: 
-	$(CXX) hdiffz.cpp libhdiffpatch.a $(MD5_OBJ) $(LZMA_OBJ) $(CXXFLAGS) $(DIFF_LINK) $(pathlix) $(pathinclude) -o hdiffz
+	$(CXX) -fPIC -shared hdiffz.cpp libhdiffpatch.a $(MD5_OBJ) $(LZMA_OBJ) $(CXXFLAGS) $(DIFF_LINK) $(pathlix) $(pathinclude) -o libhdiffz.so
 hpatchz: 
 	$(CC) hpatchz.c $(HPATCH_OBJ) $(MD5_OBJ) $(LZMA_DEC_OBJ) $(CFLAGS) $(PATCH_LINK) -o hpatchz
 
